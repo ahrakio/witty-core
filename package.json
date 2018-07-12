@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rm ./dist/* && tsc",
-    "run": "rm ./dist/* && tsc && node ./dist/index.js"
+    "run": "tsc && node ./dist/index.js"
   },
   "keywords": [],
   "author": "",
