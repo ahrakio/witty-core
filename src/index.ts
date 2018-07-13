@@ -1,5 +1,9 @@
 import * as http from "http"
 import { Router } from "./router/Router";
+import Request from "./http/Request";
+import { Route } from "./router/Route";
+import RequestHandler from "./http/RequestHandler";
+import Response from "./http/Response";
 
 /**
  * These three lines will be written in the future
@@ -17,16 +21,34 @@ Router.post('/businesses/1/sales/5/edit', 'SaleController@update');
  */
 
 let server = http.createServer((req, res) => {
-    let result = Router.exec(req.method as string, req.url as string);
+    let route: Route;
+    let uri = req.url as string;
+    let method = req.method as string;
+    let headers = req.headers as {[key: string]: string};
 
-    if (!result) {
+    let result = Router.match(method, uri);
+    if (result === null) {
         res.write('No such route\n');
         res.write(req.method + ' ' + req.url);
         res.end();
-    } else {
-        res.write(req.method + ' ' + req.url);
-        res.end();
-    }    
+    }
+
+    route = result as Route;
+    
+    let request = new Request(headers, route);
+    let response = new Response(res);
+    
+    let requestHandler = new RequestHandler(request, response);
+    requestHandler.handle()
+        .then((res) => {
+
+        },
+        (rej) => {
+            
+        });
+
+    res.write(method + ' ' + uri);
+    res.end();
 });
 
 server.listen(7777, () => {

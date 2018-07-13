@@ -1,3 +1,5 @@
+import RouteTargetParser from "./parsers/RouteTargetParser";
+
 export abstract class Route {
     private target: string; 
     private uri: string;
@@ -5,5 +7,13 @@ export abstract class Route {
     constructor(uri: string, target: string) {
         this.target = target;
         this.uri = uri;
+    }
+
+    parseTarget(parser: RouteTargetParser): [string, string] {
+        return parser.parse(this.target);
+    }
+
+    get Target(): string {
+        return this.target;
     }
 }

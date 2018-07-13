@@ -1,4 +1,5 @@
 import { Routes } from "./Routes";
+import { Route } from "./Route";
 
 export namespace Router {
 
@@ -12,8 +13,12 @@ export namespace Router {
         routes.post(uri, target);
     }
 
-    export function exec(method: string, uri: string): boolean {
-        return routes.has(method, uri);
+    export function match(method: string, uri: string): Route | null {
+        if (!routes.has(method, uri)) {
+            return null;
+        }
+
+        return routes.match(method, uri);
     }
 }
 

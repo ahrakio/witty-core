@@ -1,4 +1,4 @@
-import { Map } from "../Map";
+import { Map } from "../utils/Map";
 import { Method } from "./Constants";
 import { Route } from "./Route";
 import { GetRoute } from "./routes/GetRoute";
@@ -32,8 +32,14 @@ export class Routes {
         return this.routes.has(method) && this.routes.get(method).has(uri);
     }
 
-    public exec(method: string, uri: string) {
+    public match(method: string, uri: string): Route | null {
+        if (!this.has(method, uri)) {
+            return null;
+        }
 
+        return this.routes
+            .get(method)
+            .get(uri);
     }
 
 }
