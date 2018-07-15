@@ -17,11 +17,23 @@ export class Map<T> {
         return this.items[key];
     }
 
-    length() : number {
-        return  Object.keys(this.items).length;
+    keys(): string[] {
+        let keys: string[] = [];
+
+        for (let key in this.items) {
+            keys.push(key);
+        }
+
+        return keys;
     }
 
-    getKeys() : Array<string> {
-        return Object.keys(this.items);
+    values(): T[] {
+        let values: T[] = [];
+
+        for (let key in this.items) {
+            values.push(this.items[key]);
+        }
+
+        return values;
     }
 }

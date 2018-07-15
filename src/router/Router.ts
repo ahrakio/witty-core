@@ -1,4 +1,6 @@
 import { Routes } from "./Routes";
+import { Route } from "./Route";
+import NoRoute from "./exceptions/NoRoute";
 
 export namespace Router {
 
@@ -12,8 +14,12 @@ export namespace Router {
         routes.post(uri, target);
     }
 
-    export function exec(method: string, uri: string): boolean {
-        return routes.has(method, uri);
+    export function match(method: string, uri: string): Route | null {
+        if (!routes.has(method, uri)) {
+            throw new NoRoute();
+        }
+
+        return routes.match(method, uri);
     }
 }
 
