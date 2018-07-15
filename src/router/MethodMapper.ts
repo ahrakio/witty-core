@@ -1,4 +1,5 @@
 import { Map } from "../utils/Map";
+import {parse} from "url"
 import { Route } from "./Route";
 import NoRoute from "./exceptions/NoRoute";
 import {RouteBuilder} from "./routes/RouteBuilder";
@@ -33,6 +34,7 @@ export class MethodMapper {
                 let regex:string = "^" + uri.replace(/:\w+\//gi,"(\\w+)/");
                 regex = regex.replace(/:\w+\./gi,"(\\w+)\.");
                 regex = regex.replace(/:\w+$/gi,"(\\w+)");
+                regex += '$';
 
 
                 console.log("change " + uri + " to " + regex);
@@ -68,18 +70,29 @@ export class MethodMapper {
 
     private normalize_uri (uri:string) :string {
         uri = uri.replace(/\\/g, "/");
+        let temp:string | undefined = parse(uri, true).pathname;
+        console.log("normalize_uri:" + JSON.stringify(temp));
+        if (temp !== undefined){
+            uri = temp;
+        } else {console.log("parse is undefined")}
+        // drop / in the end of uri
+        if (uri[uri.length-1] === '/') {
+            uri = uri.slice(0,-1);
+        }
         if (uri[0] !== '/') {
             uri = '/' + uri;
         }
+
         return uri;
     }
 
     get (uri:string) : Route  {
-        uri = this.normalize_uri(uri);
-        if (this.fixed_uri.has(uri)) {
-            return this.fixed_uri.get(uri);
-        }
-        return this.MatchRoute(uri);
+
+            uri = this.normalize_uri(uri);
+            if (this.fixed_uri.has(uri)) {
+                return this.fixed_uri.get(uri);
+            }
+            return this.MatchRoute(uri);
     }
 
     private MatchRoute (uri:string) : Route {
