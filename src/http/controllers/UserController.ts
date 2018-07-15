@@ -8,5 +8,16 @@ export default class UserController extends Controller {
         super();
     }
 
-    
+    public try() {
+        console.log('tryout');
+        if (1 == 1) {
+            return this.response.json({
+                babi: 'hamra'
+            }, 401);
+        }
+
+
+
+        console.log('indeed');
+    }
 }

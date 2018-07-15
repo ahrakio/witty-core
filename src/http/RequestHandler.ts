@@ -1,29 +1,43 @@
 import Request from "./Request";
 import RouteDefaultParser from '../router/parsers/RouteDefaultParser';
 import Response from "./Response";
-import Controller from "./controllers/Controller";
+import NoController from "./exceptions/NoController";
+import NoMethod from "./exceptions/NoMethod";
+import { AppConfig } from "../App.config";
 
 export default class RequestHandler { 
-    private controller: Controller;
+    private controller: string;
     private method: string;
 
     constructor(private request: Request, private response: Response) {
         let parsed = request.Route.parseTarget(new RouteDefaultParser());
 
-        try {
-            this.controller = eval(`new ${parsed[0]}()`);
-            this.method = parsed[1];
-        } catch (err) {
-            console.log(err);
-            throw err;
-        }
+        this.controller = parsed[0];
+        this.method = parsed[1];
     }
 
     public handle(): Promise<Response> {
-        return new Promise<Response>((resolve, reject) => {
-            // Run the controller and middlewares
+        if (!AppConfig.Controllers.has(this.controller)) {
+            throw new NoController();
+        }
 
-        })
+        let controller = AppConfig.Controllers.get(this.controller);
+        let controllerInstance = new controller();
+
+        if (typeof controllerInstance[this.method] !== 'function') {
+            throw new NoMethod();
+        }
+
+        return new Promise((resolve, reject) => {
+            // Run the controller and middlewares
+            this.response.Reject = reject;
+            this.response.Resolve = resolve;
+            
+            controllerInstance.Request = this.request;
+            controllerInstance.Response = this.response;
+            
+            controllerInstance[this.method]();
+        });
     }
 
     
