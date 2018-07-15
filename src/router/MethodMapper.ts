@@ -24,7 +24,7 @@ export class MethodMapper {
 
     public add (uri:string, target: string) : void {
         uri = this.normalize_uri(uri);
-        if (!this.has(uri.replace(':',""))) {
+        if (!this.has(uri.replace(/:/g,""))) {
             if (uri.indexOf(':') === -1 ) {
                 this.fixed_uri.add(uri, this.route_builder.make(uri, target));
                 console.log(uri + " added to fixed list ");
@@ -67,7 +67,7 @@ export class MethodMapper {
     }
 
     private normalize_uri (uri:string) :string {
-        uri = uri.replace("\\", "/");
+        uri = uri.replace(/\\/g, "/");
         if (uri[0] !== '/') {
             uri = '/' + uri;
         }
