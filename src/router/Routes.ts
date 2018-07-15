@@ -1,31 +1,31 @@
 import { Map } from "../Map";
 import { Method } from "./Constants";
-import { Route } from "./Route";
-import { GetRoute } from "./routes/GetRoute";
-import { PostRoute } from "./routes/PostRoute";
+
+import {MethodMapper} from "./MethodMapper";
 
 export class Routes {
-    private routes: Map<Map<Route>>;
+    private routes: Map<MethodMapper>;
 
     constructor() {
-        this.routes = new Map<Map<Route>>();
+        this.routes = new Map<MethodMapper>();
 
-        this.routes.add(Method.GET, new Map<Route>());
-        this.routes.add(Method.POST, new Map<Route>());
-        this.routes.add(Method.PUT, new Map<Route>());
-        this.routes.add(Method.DELETE, new Map<Route>());
+        Object.keys(Method).forEach(method => {
+            this.routes.add(Method[method], new MethodMapper(Method[method]));
+        });
     }
 
     public get(uri: string, target: string) {
-        let map = this.routes
+        this.routes
             .get(Method.GET)
-            .add(uri, new GetRoute(uri, target));
+                .add(uri, target);
+        console.log("get uri resize to "+ this.routes.get(Method.GET).length());
     }
 
     public post(uri: string, target: string) {
-        let map = this.routes
+        this.routes
             .get(Method.POST)
-            .add(uri, new PostRoute(uri, target));
+                .add(uri, target);
+        console.log("post uri resize to "+ this.routes.get(Method.POST).length());
     }
 
     public has(method: string, uri: string): boolean {

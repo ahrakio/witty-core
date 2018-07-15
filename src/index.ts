@@ -6,9 +6,12 @@ import { Router } from "./router/Router";
  * in the api.ts file, which will be our Routing file
  * for the programmer who wants to add routes of his own.
  */
-Router.get('/users/5', 'UserController@update');
-Router.post('/organizations/3/events', 'EventController@store');
-Router.post('/businesses/1/sales/5/edit', 'SaleController@update');
+Router.get('/users/get_all/', 'UserController@update');
+Router.get('/users/:id/', 'UserController@update');
+
+Router.get('/organizations/:id/events', 'EventController@store');
+Router.post('/organizations/:id/events', 'EventController@store2');
+Router.get('/businesses/:id/sales/:sales/edit', 'SaleController@update');
 
 
 /**

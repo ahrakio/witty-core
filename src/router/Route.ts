@@ -6,4 +6,7 @@ export abstract class Route {
         this.target = target;
         this.uri = uri;
     }
+    get_uri () : string {
+        return this.uri;
+    }
 }

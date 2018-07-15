@@ -16,4 +16,12 @@ export class Map<T> {
     get(key: string): T {
         return this.items[key];
     }
+
+    length() : number {
+        return  Object.keys(this.items).length;
+    }
+
+    getKeys() : Array<string> {
+        return Object.keys(this.items);
+    }
 }
