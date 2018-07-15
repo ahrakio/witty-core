@@ -14,7 +14,7 @@ export namespace Router {
         routes.post(uri, target);
     }
 
-    export function match(method: string, uri: string): Route | null {
+    export function match(method: string, uri: string): Route  {
         if (!routes.has(method, uri)) {
             throw new NoRoute();
         }

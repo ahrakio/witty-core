@@ -29,6 +29,7 @@ export function WittyApp(details: {controllers: {new(): Controller}[]}) {
             
                 try {
                     result = Router.match(method, uri);
+
                 } catch (err) {
                     res.write('No such route\n');
                     res.write(req.method + ' ' + req.url);
@@ -37,6 +38,7 @@ export function WittyApp(details: {controllers: {new(): Controller}[]}) {
                 }
             
                 route = result as Route;
+
                 
                 let request = new Request(headers, route);
                 let response = new Response();

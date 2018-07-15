@@ -22,6 +22,6 @@ export default class Headers {
     }
 
     public keys(): string[] {
-        return this.headers.keys();
+        return this.headers.keys;
     }
 }

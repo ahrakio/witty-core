@@ -17,17 +17,15 @@ export class Map<T> {
         return this.items[key];
     }
 
-    keys(): string[] {
-        let keys: string[] = [];
-
-        for (let key in this.items) {
-            keys.push(key);
-        }
-
-        return keys;
+    get keys() : string[] {
+        return Object.keys(this.items);
     }
 
-    values(): T[] {
+    length() : number {
+        return  Object.keys(this.items).length;
+    }
+
+    get values(): T[] {
         let values: T[] = [];
 
         for (let key in this.items) {

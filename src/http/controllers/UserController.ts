@@ -11,9 +11,8 @@ export default class UserController extends Controller {
     public try() {
         console.log('tryout');
         if (1 == 1) {
-            return this.response.json({
-                babi: 'hamra'
-            }, 401);
+            console.log(this.request);
+            return this.response.json(this.request.Route.Params, 401);
         }
 
 
