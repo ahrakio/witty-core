@@ -1,7 +1,10 @@
 import { Map } from "../utils/Map";
+import {parse} from "url"
 import { Route } from "./Route";
 import NoRoute from "./exceptions/NoRoute";
+
 import {RouteBuilder} from "./routes/RouteBuilder";
+import RouteConflict from "../http/exceptions/RouteConflict";
 export class MethodMapper {
     private fixed_uri : Map<Route>;
     private regex_uri : Array<Route>;
@@ -33,6 +36,7 @@ export class MethodMapper {
                 let regex:string = "^" + uri.replace(/:\w+\//gi,"(\\w+)/");
                 regex = regex.replace(/:\w+\./gi,"(\\w+)\.");
                 regex = regex.replace(/:\w+$/gi,"(\\w+)");
+                regex += '$';
 
 
                 console.log("change " + uri + " to " + regex);
@@ -41,9 +45,8 @@ export class MethodMapper {
                 for (let key_num = 0 ; key_num < fixed_keys.length; ++key_num) {
                     let route_uri: string = this.fixed_uri.get(fixed_keys[key_num]).Uri;
                     if (route_uri.match(regex)) {
-                        /// TODO : exception throwing???
                         console.log("regex Uri" + regex +" conflicted with : " + route_uri);
-                        return;
+                        throw new RouteConflict(uri);
                     }
                 }
                 let route :Route = this.route_builder.make(regex, target);
@@ -62,12 +65,24 @@ export class MethodMapper {
         } else {
             /// TODO : exception throwing???
             console.log("double insertion for Uri : " + uri);
+            throw new RouteConflict(uri);
         }
 
     }
 
     private normalize_uri (uri:string) :string {
         uri = uri.replace(/\\/g, "/");
+        // cut off only the path part from uri using nodeJS url.parse()
+        let temp:string | undefined = parse(uri, true).pathname;
+
+        if (temp !== undefined){
+            uri = temp;
+        } else {console.log("url.parse is undefined.")}
+        // drop '/' in the end of uri, if there is one.
+        if (uri[uri.length-1] === '/') {
+            uri = uri.slice(0,-1);
+        }
+        // add '/' in the beginning if there isn't one
         if (uri[0] !== '/') {
             uri = '/' + uri;
         }
@@ -75,23 +90,23 @@ export class MethodMapper {
     }
 
     get (uri:string) : Route  {
-        uri = this.normalize_uri(uri);
-        if (this.fixed_uri.has(uri)) {
-            return this.fixed_uri.get(uri);
-        }
-        return this.MatchRoute(uri);
+            uri = this.normalize_uri(uri);
+            if (this.fixed_uri.has(uri)) {
+                return this.fixed_uri.get(uri);
+            }
+            return this.MatchRoute(uri);
     }
 
     private MatchRoute (uri:string) : Route {
         for (let index =0  ; index < this.regex_uri.length ; ++index) {
             let match = uri.match(this.regex_uri[index].Uri);
             console.log("try to match" + uri + " to "+ this.regex_uri[index].Uri);
-            console.log("result :" + JSON.stringify(match));
+
             if (match !== null ) {
                 let route = this.route_builder.make(uri, this.regex_uri[index].Target);
                 route.ParamKeys = this.regex_uri[index].ParamKeys;
                 route.SetParamValues(match.slice(1));
-                console.log("MatchRoute: "+ JSON.stringify(route));
+                console.log("MatchRoute() returns: "+ JSON.stringify(route));
                 return route;
             }
         }
@@ -105,8 +120,6 @@ export class MethodMapper {
             let match = uri.match(uri_regex);
             if (match !== null ) {
                 console.log("find a match " + uri + " with " + uri_regex);
-                console.log("first param is " + match[1]);
-                // TODO parse parameters
                 return true;
             }
         }
