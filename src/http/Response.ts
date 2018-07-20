@@ -1,4 +1,4 @@
-export default class Response {
+export class Response {
     private data: string;
     private statusCode: number;
     private resolve: any; 

@@ -1,4 +1,4 @@
-import RouteTargetParser from "./parsers/RouteTargetParser";
+import {RouteTargetParser} from "./parsers/RouteTargetParser";
 import {Map} from "../utils/Map";
 export abstract class Route {
     private target: string; 

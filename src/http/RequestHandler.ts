@@ -1,11 +1,11 @@
-import Request from "./Request";
-import RouteDefaultParser from '../router/parsers/RouteDefaultParser';
-import Response from "./Response";
-import NoController from "./exceptions/NoController";
-import NoMethod from "./exceptions/NoMethod";
+import {Request} from "./Request";
+import {RouteDefaultParser} from '../router/parsers/RouteDefaultParser';
+import {Response} from "./Response";
+import {NoController} from "./exceptions/NoController";
+import {NoMethod} from "./exceptions/NoMethod";
 import { AppConfig } from "../App.config";
 
-export default class RequestHandler { 
+export class RequestHandler { 
     private controller: string;
     private method: string;
 

@@ -1,7 +1,7 @@
-import Request from "../Request";
-import Response from "../Response";
+import {Request} from "../Request";
+import {Response} from "../Response";
 
-export default abstract class Controller {
+export abstract class Controller {
     protected request: Request;
     protected response: Response;
     private resolve: any; 

@@ -1,6 +1,6 @@
-import RouteTargetParser from "./RouteTargetParser";
+import {RouteTargetParser} from "./RouteTargetParser";
 
-export default class RouteDefaultParser extends RouteTargetParser {
+export class RouteDefaultParser extends RouteTargetParser {
     constructor() {
         super();
     }

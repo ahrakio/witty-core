@@ -1,7 +1,7 @@
 import { Map } from "../utils/Map";
-import NoHeaderError from "./exceptions/NoHeaderError";
+import {NoHeaderError} from "./exceptions/NoHeaderError";
 
-export default class Headers {
+export class Headers {
 
     private headers: Map<string>;
 

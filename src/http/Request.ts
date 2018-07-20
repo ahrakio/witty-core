@@ -1,7 +1,7 @@
-import Headers from "./Headers";
+import {Headers} from "./Headers";
 import { Route } from "../router/Route";
 
-export default class Request {
+export class Request {
     private headers: Headers;
     private route: Route;
 

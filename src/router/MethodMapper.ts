@@ -1,10 +1,10 @@
 import { Map } from "../utils/Map";
 import {parse} from "url"
 import { Route } from "./Route";
-import NoRoute from "./exceptions/NoRoute";
+import {NoRoute} from "./exceptions/NoRoute";
 
 import {RouteBuilder} from "./routes/RouteBuilder";
-import RouteConflict from "../http/exceptions/RouteConflict";
+import {RouteConflict} from "../http/exceptions/RouteConflict";
 export class MethodMapper {
     private fixed_uri : Map<Route>;
     private regex_uri : Array<Route>;

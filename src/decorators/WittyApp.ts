@@ -1,14 +1,14 @@
 import * as http from 'http';
 import { Route } from '../router/Route';
-import RequestHandler from '../http/RequestHandler';
-import Request from '../http/Request';
-import Response from '../http/Response';
+import {RequestHandler} from '../http/RequestHandler';
+import {Request} from '../http/Request';
+import {Response} from '../http/Response';
 import { Router } from '../router/Router';
 import { Map } from "../utils/Map";
-import Controller from "../http/controllers/Controller";
+import {Controller} from "../http/controllers/Controller";
 import { AppConfig } from '../App.config';
 
-export function WittyApp(details: {controllers: {new(): Controller}[]}) {
+export function WittyApp<U extends Controller>(details: {controllers: {new(): U}[]}) {
     return <T extends {new(...args:any[]):{}}>(constructor:T) => {
         let c = new Map<{new(): Controller}>();
 

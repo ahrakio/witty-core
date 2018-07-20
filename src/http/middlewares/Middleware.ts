@@ -1,3 +1,3 @@
-export default abstract class Middleware {
+export abstract class Middleware {
     constructor() {}
 }

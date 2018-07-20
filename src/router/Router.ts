@@ -1,25 +1,25 @@
 import { Routes } from "./Routes";
 import { Route } from "./Route";
-import NoRoute from "./exceptions/NoRoute";
+import {NoRoute} from "./exceptions/NoRoute";
 
-export namespace Router {
+export class Router {
 
-    let routes = new Routes();
+    private static routes = new Routes();
 
-    export function get(uri: string, target: string) {
-        routes.get(uri, target);
+    static get(uri: string, target: string) {
+        Router.routes.get(uri, target);
     }
 
-    export function post(uri: string, target: string) {
-        routes.post(uri, target);
+    static post(uri: string, target: string) {
+        Router.routes.post(uri, target);
     }
 
-    export function match(method: string, uri: string): Route  {
-        if (!routes.has(method, uri)) {
+    static match(method: string, uri: string): Route  {
+        if (!Router.routes.has(method, uri)) {
             throw new NoRoute();
         }
 
-        return routes.match(method, uri);
+        return Router.routes.match(method, uri);
     }
 }
 

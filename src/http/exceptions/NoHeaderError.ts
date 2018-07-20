@@ -1,4 +1,4 @@
-export default class NoHeaderError extends Error {
+export class NoHeaderError extends Error {
     constructor() {
         super("NoHeaderError");
     }

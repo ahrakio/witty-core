@@ -1,4 +1,4 @@
-import Controller from "./http/controllers/Controller";
+import {Controller} from "./http/controllers/Controller";
 import { Map } from "./utils/Map";
 
 export class AppConfig {

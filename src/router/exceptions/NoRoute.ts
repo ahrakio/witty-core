@@ -1,4 +1,4 @@
-export default class NoRoute extends Error {
+export class NoRoute extends Error {
     constructor() {
         super("NoRoute");
     }

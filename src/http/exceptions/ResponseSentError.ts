@@ -1,4 +1,4 @@
-export default class ResponseSentError extends Error {
+export class ResponseSentError extends Error {
     constructor() {
         super('ResponseSentError');
     }

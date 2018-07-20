@@ -1,19 +1,26 @@
 {
-  "name": "ahrak",
-  "version": "1.0.0",
+  "name": "ahrakio",
+  "version": "1.1.4",
   "description": "",
-  "main": "index.js",
+  "main": "dist/bundle.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rm ./dist/* && tsc",
-    "run": "tsc && node ./dist/index.js"
+    "run": "tsc && node ./dist/index.js",
+    "start": "webpack"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^10.5.1",
+    "clean-webpack-plugin": "^0.1.19",
+    "ts-loader": "^4.4.2",
     "typescript": "^2.9.2",
-    "typings": "^2.1.1"
+    "typings": "^2.1.1",
+    "uglifyjs-webpack-plugin": "^1.2.7",
+    "webpack": "^4.16.1",
+    "webpack-cli": "^3.0.8"
   }
 }

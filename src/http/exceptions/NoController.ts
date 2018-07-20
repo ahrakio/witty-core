@@ -1,4 +1,4 @@
-export default class NoController extends Error {
+export class NoController extends Error {
     constructor() {
         super("NoController");
     }
