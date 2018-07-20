@@ -5,12 +5,14 @@ export abstract class Route {
     private uri: string;
     private keys : string[];
     private params_map : Map<string>;
+    private middlewares: string[];
 
     constructor(uri: string, target: string) {
         this.target = target;
         this.uri = uri;
         this.keys = [];
         this.params_map = new Map<string>();
+        this.middlewares = [];
     }
     get Uri () : string {
         return this.uri;
@@ -42,5 +44,17 @@ export abstract class Route {
 
     get Target(): string {
         return this.target;
+    }
+
+    get Middlewares(): string[] {
+        return this.middlewares;
+    }
+
+    set Middlewares(value: string[]) {
+        this.middlewares = value;
+    }
+
+    public addMiddleware(value: string) {
+        this.middlewares.push(value);
     }
 }

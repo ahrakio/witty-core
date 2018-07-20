@@ -18,14 +18,14 @@ export class Routes {
     public get(uri: string, target: string) {
         this.routes
             .get(Method.GET)
-                .add(uri, target);
+            .add(uri, target);
         console.log("get Uri resize to "+ this.routes.get(Method.GET).length());
     }
 
     public post(uri: string, target: string) {
         this.routes
             .get(Method.POST)
-                .add(uri, target);
+            .add(uri, target);
         console.log("post Uri resize to "+ this.routes.get(Method.POST).length());
     }
 
