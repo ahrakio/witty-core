@@ -39,7 +39,7 @@ export abstract class Route {
             return;
         }
         for (let key =0 ; key < this.ParamKeys.length ; ++key) {
-            this.params_map[this.ParamKeys[key]] = values[key];
+            this.params_map.add(this.ParamKeys[key], values[key]);
         }
     }
 
