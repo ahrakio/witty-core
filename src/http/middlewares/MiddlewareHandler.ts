@@ -8,6 +8,7 @@ export class MiddlewareHandler {
 
     public async handle(): Promise<boolean> {
         let middlewares: string[] = this.request.Route.Middlewares;
+        console.log("Middlewares: " + middlewares);
         let final_result;
         
         for (let i = 0; i < middlewares.length; i++) {
@@ -16,6 +17,8 @@ export class MiddlewareHandler {
             }
 
             let result = (new (AppConfig.Middlewares.get(middlewares[i]))).handle();
+
+            console.log("Middleware " + middlewares[i] + " result: " + result);
 
             if (result instanceof Promise) {
                 final_result = await result;
