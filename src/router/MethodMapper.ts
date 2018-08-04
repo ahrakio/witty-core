@@ -52,6 +52,7 @@ export class MethodMapper {
                     }
                 }
                 let route :Route = this.route_builder.make(regex, options);
+                console.log("route obj: " + route);
                 let params: string[] | null = uri.match(/:\w+([\/.]|$)/gi);
                 if (params !== null) {
                     // get param names
