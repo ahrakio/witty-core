@@ -13,13 +13,13 @@ export class RouteBuilder {
     make (uri:string, options: RouteOptions) : Route {
         switch (this.method) {
             case Method.GET :
-                return new GetRoute(uri, options.target);
+                return new GetRoute(uri, options.target, options);
                 break;
             case Method.POST :
-                return new PostRoute(uri, options.target);
+                return new PostRoute(uri, options.target, options);
                 break;
             default:
-                return new GetRoute(uri, options.target);
+                return new GetRoute(uri, options.target, options);
             /// TODo Throwing exception?
         }
         /// TODo Throwing exception?
