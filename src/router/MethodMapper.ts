@@ -52,7 +52,7 @@ export class MethodMapper {
                     }
                 }
                 let route :Route = this.route_builder.make(regex, options);
-                console.log("route obj: " + route);
+                console.log("route obj: " + route.Middlewares);
                 let params: string[] | null = uri.match(/:\w+([\/.]|$)/gi);
                 if (params !== null) {
                     // get param names
@@ -92,12 +92,12 @@ export class MethodMapper {
         return uri;
     }
 
-    get (uri:string) : Route  {
-            uri = this.normalize_uri(uri);
-            if (this.fixed_uri.has(uri)) {
-                return this.fixed_uri.get(uri);
-            }
-            return this.MatchRoute(uri);
+    public get(uri:string): Route {
+        uri = this.normalize_uri(uri);
+        if (this.fixed_uri.has(uri)) {
+            return this.fixed_uri.get(uri);
+        }
+        return this.MatchRoute(uri);
     }
 
     private MatchRoute (uri:string) : Route {
