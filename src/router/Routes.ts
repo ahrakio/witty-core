@@ -3,6 +3,7 @@ import { Method } from "./Constants";
 import {Route} from "./Route"
 
 import {MethodMapper} from "./MethodMapper";
+import { RouteOptions } from "./RouteOptions";
 
 export class Routes {
     private routes: Map<MethodMapper>;
@@ -15,29 +16,21 @@ export class Routes {
         });
     }
 
-    public get(uri: string, target: string) {
-        this.routes
-            .get(Method.GET)
-            .add(uri, target);
-        console.log("get Uri resize to "+ this.routes.get(Method.GET).length());
-    }
-
-    public post(uri: string, target: string) {
-        this.routes
-            .get(Method.POST)
-            .add(uri, target);
-        console.log("post Uri resize to "+ this.routes.get(Method.POST).length());
-    }
-
     public has(method: string, uri: string): boolean {
         return this.routes.has(method) && this.routes.get(method).has(uri);
     }
 
     public match(method: string, uri: string): Route  {
-
         return this.routes
             .get(method)
             .get(uri);
+    }
+
+    public addRoute(uri: string, method: string, options: RouteOptions) {
+        this.routes
+            .get(method)
+            .add(uri, options);
+        console.log("get Uri resize to "+ this.routes.get(method).length());
     }
 
 }

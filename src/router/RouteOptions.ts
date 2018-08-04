@@ -1,4 +1,4 @@
 export interface RouteOptions {
-    exec: string;
-    middleware?: string[];
+    target: string;
+    middlewares?: string[];
 }

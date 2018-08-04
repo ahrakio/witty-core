@@ -5,6 +5,8 @@ import {NoRoute} from "./exceptions/NoRoute";
 
 import {RouteBuilder} from "./routes/RouteBuilder";
 import {RouteConflict} from "../http/exceptions/RouteConflict";
+import { RouteOptions } from './RouteOptions';
+
 export class MethodMapper {
     private fixed_uri : Map<Route>;
     private regex_uri : Array<Route>;
@@ -17,7 +19,7 @@ export class MethodMapper {
     }
 
     public length() : number {
-           return this.fixed_uri.length() + this.regex_uri.length;
+        return this.fixed_uri.length() + this.regex_uri.length;
     }
 
     public has(uri:string): boolean {
@@ -25,11 +27,11 @@ export class MethodMapper {
         return ((this.fixed_uri.has(uri)) || (this.isUriMatchToRegex(uri)));
     }
 
-    public add (uri:string, target: string) : void {
+    public add (uri:string, options: RouteOptions) : void {
         uri = this.normalize_uri(uri);
         if (!this.has(uri.replace(/:/g,""))) {
             if (uri.indexOf(':') === -1 ) {
-                this.fixed_uri.add(uri, this.route_builder.make(uri, target));
+                this.fixed_uri.add(uri, this.route_builder.make(uri, options));
                 console.log(uri + " added to fixed list ");
             } else {
                 // make a regex for given uri with ':'
@@ -49,7 +51,7 @@ export class MethodMapper {
                         throw new RouteConflict(uri);
                     }
                 }
-                let route :Route = this.route_builder.make(regex, target);
+                let route :Route = this.route_builder.make(regex, options);
                 let params: string[] | null = uri.match(/:\w+([\/.]|$)/gi);
                 if (params !== null) {
                     // get param names
@@ -103,7 +105,7 @@ export class MethodMapper {
             console.log("try to match" + uri + " to "+ this.regex_uri[index].Uri);
 
             if (match !== null ) {
-                let route = this.route_builder.make(uri, this.regex_uri[index].Target);
+                let route = this.route_builder.make(uri, {target: this.regex_uri[index].Target});
                 route.ParamKeys = this.regex_uri[index].ParamKeys;
                 route.SetParamValues(match.slice(1));
                 console.log("MatchRoute() returns: "+ JSON.stringify(route));

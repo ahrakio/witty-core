@@ -1,5 +1,6 @@
 import {RouteTargetParser} from "./parsers/RouteTargetParser";
 import {Map} from "../utils/Map";
+import { RouteOptions } from "./RouteOptions";
 export abstract class Route {
     private target: string; 
     private uri: string;
@@ -7,12 +8,16 @@ export abstract class Route {
     private params_map : Map<string>;
     private middlewares: string[];
 
-    constructor(uri: string, target: string) {
+    constructor(uri: string, target: string, options?: RouteOptions) {
         this.target = target;
         this.uri = uri;
         this.keys = [];
         this.params_map = new Map<string>();
         this.middlewares = [];
+
+        if (options && options.middlewares) {
+            this.middlewares = options.middlewares;
+        }
     }
     get Uri () : string {
         return this.uri;
