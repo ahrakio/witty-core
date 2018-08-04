@@ -108,6 +108,7 @@ export class MethodMapper {
             if (match !== null ) {
                 let route = this.route_builder.make(uri, {target: this.regex_uri[index].Target});
                 route.ParamKeys = this.regex_uri[index].ParamKeys;
+                route.Middlewares = this.regex_uri[index].Middlewares;
                 route.SetParamValues(match.slice(1));
                 console.log("MatchRoute() returns: "+ JSON.stringify(route));
                 return route;
