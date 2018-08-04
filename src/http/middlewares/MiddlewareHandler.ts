@@ -16,7 +16,11 @@ export class MiddlewareHandler {
                 throw new NoMiddleware();
             }
 
-            let result = (new (AppConfig.Middlewares.get(middlewares[i]))).handle();
+            let middleware = new (AppConfig.Middlewares.get(middlewares[i]));
+            middleware.Request = this.request;
+            middleware.Response = this.response;
+
+            let result = middleware.handle();
 
             console.log("Middleware " + middlewares[i] + " result: " + result);
 
