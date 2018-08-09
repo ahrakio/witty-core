@@ -9,22 +9,20 @@ export class Router {
     private static routes = new Routes();
 
     static get(uri: string, options: RouteOptions | string) {
-        if (typeof options === 'string') {
-            Router.routes.addRoute(uri, Method.GET, {
-                target: options
-            });
-        } else {
-            Router.routes.addRoute(uri, Method.GET, options);
-        }
+        Router.add(uri, Method.GET, options);
     }
 
     static post(uri: string, options: RouteOptions | string) {
+        Router.add(uri, Method.POST, options);
+    }
+
+    private static add(uri: string, method: string, options: RouteOptions | string) {
         if (typeof options === 'string') {
-            Router.routes.addRoute(uri, Method.POST, {
+            Router.routes.addRoute(uri, method, {
                 target: options
             });
         } else {
-            Router.routes.addRoute(uri, Method.POST, options);
+            Router.routes.addRoute(uri, method, options);
         }
     }
 
