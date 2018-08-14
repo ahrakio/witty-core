@@ -32,7 +32,7 @@ export class Response {
     }
 
     send(res: any) {
-        res.writeHead(404);
+        res.writeHead(this.statusCode);
         res.write(this.data);
         res.end();
     }

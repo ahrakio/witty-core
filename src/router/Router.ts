@@ -26,7 +26,7 @@ export class Router {
         }
     }
 
-    static match(method: string, uri: string): Route  {
+    static match(method: string, uri: string): Route {
         if (!Router.routes.has(method, uri)) {
             throw new NoRoute();
         }
