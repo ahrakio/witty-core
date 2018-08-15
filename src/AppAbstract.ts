@@ -2,10 +2,19 @@ export abstract class AppAbstract {
     constructor() {}
 
     private server: any;
+    private port: number;
 
     public bootstrap() {
-        console.log('>> ' + process.argv[0] + ' ' + process.argv[1]);
-        this.server.listen(8080, () => {
+
+        try {
+            this.port = +process.argv[2];
+        } catch (e) {
+            this.port = 8400;
+        }
+
+        console.log(this.port);
+        
+        this.server.listen(this.port, () => {
             console.log('Listening...');
         });
     }
