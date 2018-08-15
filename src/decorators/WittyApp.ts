@@ -26,7 +26,6 @@ export function WittyApp<C extends Controller, M extends Middleware>(details: {c
 
         AppConfig.Controllers = c;
         AppConfig.Middlewares = m;
-        console.log("App middlewares: " + AppConfig.Middlewares);
 
         return class extends constructor {
             server = http.createServer(async (req, res) => {
