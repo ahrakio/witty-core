@@ -6,10 +6,9 @@ export abstract class AppAbstract {
 
     public bootstrap() {
 
-        try {
+        this.port = 8400;
+        if (typeof process.argv[2] !== undefined) {
             this.port = +process.argv[2];
-        } catch (e) {
-            this.port = 8400;
         }
 
         console.log(this.port);
