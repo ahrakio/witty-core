@@ -4,7 +4,7 @@ import { GetRoute } from "./GetRoute";
 import { PostRoute } from "./PostRoute";
 import { RouteOptions } from '../RouteOptions';
 
-export class RouteBuilder {
+export class RouteFactory {
     private method:string;
     constructor(method:string) {
         this.method = method;
