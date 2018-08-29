@@ -30,7 +30,6 @@ export class Routes {
         this.routes
             .get(method)
             .add(uri, options);
-        console.log("get Uri resize to "+ this.routes.get(method).length());
     }
 
 }

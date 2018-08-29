@@ -72,9 +72,11 @@ export class MethodMapper {
         // cut off only the path part from uri using nodeJS url.parse()
         let temp:string | undefined = parse(uri, true).pathname;
 
-        if (temp !== undefined){
+        if (temp !== undefined) {
             uri = temp;
-        } else {console.log("url.parse is undefined.")}
+        } else {
+            console.log("failed to parse pathname from " + uri);
+        }
         // drop '/' in the end of uri, if there is one.
         if (uri[uri.length-1] === '/') {
             uri = uri.slice(0,-1);
