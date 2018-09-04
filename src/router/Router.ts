@@ -1,37 +1,51 @@
 import { Routes } from "./Routes";
 import { Route } from "./Route";
-import {NoRoute} from "./exceptions/NoRoute";
-import { Method } from './Constants';
-import { RouteOptions } from './RouteOptions';
+import { NoRoute } from "./exceptions/NoRoute";
+import { Method } from "./Constants";
+import { RouteOptions } from "./RouteOptions";
 
 export class Router {
+	private static routes = new Routes();
 
-    private static routes = new Routes();
+	static get(uri: string, options: RouteOptions | string) {
+		Router.add(uri, Method.GET, options);
+	}
 
-    static get(uri: string, options: RouteOptions | string) {
-        Router.add(uri, Method.GET, options);
-    }
+	static post(uri: string, options: RouteOptions | string) {
+		Router.add(uri, Method.POST, options);
+	}
 
-    static post(uri: string, options: RouteOptions | string) {
-        Router.add(uri, Method.POST, options);
-    }
+	static put(uri: string, options: RouteOptions | string) {
+		Router.add(uri, Method.PUT, options);
+	}
 
-    private static add(uri: string, method: string, options: RouteOptions | string) {
-        if (typeof options === 'string') {
-            Router.routes.addRoute(uri, method, {
-                target: options
-            });
-        } else {
-            Router.routes.addRoute(uri, method, options);
-        }
-    }
+	static patch(uri: string, options: RouteOptions | string) {
+		Router.add(uri, Method.PATCH, options);
+	}
 
-    static match(method: string, uri: string): Route {
-        if (!Router.routes.has(method, uri)) {
-            throw new NoRoute();
-        }
+	static delete(uri: string, options: RouteOptions | string) {
+		Router.add(uri, Method.DELETE, options);
+	}
 
-        return Router.routes.match(method, uri);
-    }
+	private static add(
+		uri: string,
+		method: string,
+		options: RouteOptions | string
+	) {
+		if (typeof options === "string") {
+			Router.routes.addRoute(uri, method, {
+				target: options
+			});
+		} else {
+			Router.routes.addRoute(uri, method, options);
+		}
+	}
+
+	static match(method: string, uri: string): Route {
+		if (!Router.routes.has(method, uri)) {
+			throw new NoRoute();
+		}
+
+		return Router.routes.match(method, uri);
+	}
 }
-

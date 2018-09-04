@@ -1,19 +1,16 @@
 export abstract class AppAbstract {
-    constructor() {}
+	constructor() {}
 
-    private server: any;
-    private port: number;
+	private server: any;
+	private port: number;
 
-    public bootstrap() {
+	public bootstrap() {
+		this.port = 8400;
 
-        this.port = 8400;
+		if (typeof process.argv[2] !== "undefined") {
+			this.port = +process.argv[2];
+		}
 
-        if (typeof process.argv[2] !== 'undefined') {
-            this.port = +process.argv[2];
-        }
-        
-        this.server.listen(this.port, () => {
-            console.log('Listening...');
-        });
-    }
+		this.server.listen(this.port, () => {});
+	}
 }
