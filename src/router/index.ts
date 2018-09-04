@@ -9,4 +9,4 @@ export { PostRoute } from './routes/PostRoute';
 export { RouteDefaultParser } from './parsers/RouteDefaultParser';
 export { RouteTargetParser } from './parsers/RouteTargetParser';
 export { NoRoute } from './exceptions/NoRoute';
-export { RouteBuilder } from './routes/RouteBuilder';
+export { RouteFactory } from './routes/RouteFactory';
