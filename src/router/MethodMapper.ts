@@ -93,7 +93,9 @@ export class MethodMapper {
     }
 
     public get(uri: string): Route {
+        console.log(uri);
         uri = this.normalize_uri(uri);
+        console.log(uri);
         if (this.fixed_uri.has(uri)) {
             return this.fixed_uri.get(uri);
         }
