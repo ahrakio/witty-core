@@ -11,74 +11,76 @@ import { Middleware } from "../http/middlewares/Middleware";
 import { MiddlewareHandler } from "../http/middlewares/MiddlewareHandler";
 
 export function WittyApp<C extends Controller, M extends Middleware>(details: {
-	controllers: { new (): C }[];
-	middlewares: { new (): M }[];
+    controllers: { new (): C }[];
+    middlewares: { new (): M }[];
 }) {
-	return <T extends { new (...args: any[]): {} }>(constructor: T) => {
-		let c = new Map<{ new (): Controller }>();
-		let m = new Map<{ new (): Middleware }>();
+    return <T extends { new (...args: any[]): {} }>(constructor: T) => {
+        let c = new Map<{ new (): Controller }>();
+        let m = new Map<{ new (): Middleware }>();
 
-		for (let controller of details.controllers) {
-			c.add(controller.name, controller);
-		}
+        for (let controller of details.controllers) {
+            c.add(controller.name, controller);
+        }
 
-		for (let middleware of details.middlewares) {
-			m.add(middleware.name, middleware);
-		}
+        for (let middleware of details.middlewares) {
+            m.add(middleware.name, middleware);
+        }
 
-		AppConfig.Controllers = c;
-		AppConfig.Middlewares = m;
+        AppConfig.Controllers = c;
+        AppConfig.Middlewares = m;
 
-		return class extends constructor {
-			server = http.createServer(async (req, res) => {
-				let route: Route;
-				let uri = req.url as string;
-				let method = req.method as string;
-				let headers = req.headers as { [key: string]: string };
+        return class extends constructor {
+            server = http.createServer(async (req, res) => {
+                let route: Route;
+                let uri = req.url as string;
+                let method = req.method as string;
+                let headers = req.headers as { [key: string]: string };
 
-				let result;
+                let result;
 
-				try {
-					result = Router.match(method, uri);
-				} catch (err) {
-					res.write("No such route\n");
-					res.write(req.method + " " + req.url);
-					res.end();
-					return;
-				}
+                try {
+                    result = Router.match(method, uri);
+                } catch (err) {
+                    res.write("No such route\n");
+                    res.write(req.method + " " + req.url);
+                    res.end();
+                    return;
+                }
 
-				route = result as Route;
+                route = result as Route;
 
-				let request = new Request(headers, route);
-				let response = new Response();
+                let request = new Request(headers, route);
+                let response = new Response();
 
-				let middlewareHandler = new MiddlewareHandler(
-					request,
-					response
-				);
-				if (!(await middlewareHandler.handle())) {
-					res.write("didnt pass middleware");
-					res.end();
-					return;
-				}
+                let middlewareHandler = new MiddlewareHandler(request, response);
 
-				let requestHandler = new RequestHandler(request, response);
+                try {
+                    if (!(await middlewareHandler.handle())) {
+                        res.write("didnt pass middleware");
+                        res.end();
+                        return;
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
 
-				try {
-					requestHandler
-						.handle()
-						.then((resolved: Response) => {
-							resolved.send(res);
-						})
-						.catch(rej => {
-							res.write("rejected");
-							res.end();
-						});
-				} catch (err) {
-					res.write(err);
-					res.end();
-				}
-			});
-		};
-	};
+                let requestHandler = new RequestHandler(request, response);
+
+                try {
+                    requestHandler
+                        .handle()
+                        .then((resolved: Response) => {
+                            resolved.send(res);
+                        })
+                        .catch((rej) => {
+                            res.write("rejected");
+                            res.end();
+                        });
+                } catch (err) {
+                    res.write(err);
+                    res.end();
+                }
+            });
+        };
+    };
 }
