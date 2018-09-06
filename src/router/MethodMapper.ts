@@ -48,7 +48,7 @@ export class MethodMapper {
                         throw new RouteConflict(uri);
                     }
                 }
-                let route: Route = new Route(uri, options);
+                let route: Route = new Route(regex, options);
                 console.log("route obj: " + route.Middlewares);
                 let params: string[] | null = uri.match(/:\w+([\/.]|$)/gi);
                 if (params !== null) {
