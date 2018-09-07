@@ -1,8 +1,8 @@
 export class Response {
     private data: string;
     private statusCode: number;
-    private resolve: any; 
-    private reject: any; 
+    private resolve: any;
+    private reject: any;
 
     constructor() {
         this.data = "";
@@ -12,7 +12,7 @@ export class Response {
     set Resolve(value: any) {
         this.resolve = value;
     }
-    
+
     set Reject(value: any) {
         this.reject = value;
     }
@@ -36,6 +36,4 @@ export class Response {
         res.write(this.data);
         res.end();
     }
-
-
 }

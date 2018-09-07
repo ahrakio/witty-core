@@ -9,15 +9,12 @@ import { Controller } from "../http/controllers/Controller";
 import { AppConfig } from "../App.config";
 import { Middleware } from "../http/middlewares/Middleware";
 import { MiddlewareHandler } from "../http/middlewares/MiddlewareHandler";
-
-export function WittyApp<C extends Controller, M extends Middleware>(details: {
-    controllers: { new (): C }[];
-    middlewares: { new (): M }[];
-}) {
-    return <T extends { new (...args: any[]): {} }>(constructor: T) => {
-        let c = new Map<{ new (): Controller }>();
-        let m = new Map<{ new (): Middleware }>();
-
+// prettier-ignore
+export function WittyApp<C extends Controller, M extends Middleware>(details: { controllers: { new(): C }[], middlewares: { new(): M }[] }) {
+    return <T extends { new(...args: any[]): {} }>(constructor: T) => {
+        let c = new Map<{ new(): Controller }>();
+        let m = new Map<{ new(): Middleware }>();
+        
         for (let controller of details.controllers) {
             c.add(controller.name, controller);
         }
@@ -54,32 +51,30 @@ export function WittyApp<C extends Controller, M extends Middleware>(details: {
 
                 let middlewareHandler = new MiddlewareHandler(request, response);
 
-                try {
-                    if (!(await middlewareHandler.handle())) {
+                middlewareHandler
+                    .handle()
+                    .then((result) => {
+                        let requestHandler = new RequestHandler(request, response);
+
+                        try {
+                            requestHandler
+                                .handle()
+                                .then((resolved: Response) => {
+                                    return resolved.send(res);
+                                })
+                                .catch((rej) => {
+                                    return res.end();
+                                });
+                        } catch (err) {
+                            res.write(err);
+                            return res.end();
+                        }
+                    })
+                    .catch((err) => {
                         res.write("didnt pass middleware");
                         res.end();
                         return;
-                    }
-                } catch (e) {
-                    console.log(e);
-                }
-
-                let requestHandler = new RequestHandler(request, response);
-
-                try {
-                    requestHandler
-                        .handle()
-                        .then((resolved: Response) => {
-                            resolved.send(res);
-                        })
-                        .catch((rej) => {
-                            res.write("rejected");
-                            res.end();
-                        });
-                } catch (err) {
-                    res.write(err);
-                    res.end();
-                }
+                    });
             });
         };
     };

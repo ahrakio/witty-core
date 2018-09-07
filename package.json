@@ -1,6 +1,6 @@
 {
     "name": "ahrakio",
-    "version": "1.4.3",
+    "version": "1.7.3",
     "description": "",
     "main": "dist/bundle.js",
     "types": "dist/index.d.ts",
@@ -8,7 +8,8 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "rm ./dist/* && tsc",
         "run": "tsc && node ./dist/index.js",
-        "start": "webpack"
+        "start": "webpack",
+        "pub": "npm start && npm publish --access public"
     },
     "keywords": [],
     "author": "",
