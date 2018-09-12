@@ -5,6 +5,9 @@ import { NoRoute } from "./exceptions/NoRoute";
 import { RouteConflict } from "../http/exceptions/RouteConflict";
 import { RouteOptions } from "./RouteOptions";
 
+const end_with = /\/$/;
+const start_with = /^\//;
+
 export class MethodMapper {
     private fixed_uri: Map<Route>;
     private regex_uri: Array<Route>;
@@ -78,14 +81,15 @@ export class MethodMapper {
         if (temp !== undefined) {
             uri = temp;
         } else {
-            //console.log("url.parse is undefined.");
+            console.log("failed to get path name from uri.");
+            // TODO  - thrown exception
         }
         // drop '/' in the end of uri, if there is one.
-        if (uri[uri.length - 1] === "/") {
+        if (uri.match(end_with)) {
             uri = uri.slice(0, -1);
         }
         // add '/' in the beginning if there isn't one
-        if (uri[0] !== "/") {
+        if (uri.match(start_with)) {
             uri = "/" + uri;
         }
         return uri;
