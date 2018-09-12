@@ -19,12 +19,27 @@ export class Router {
         Router.add(uri, Method.PUT, options);
     }
 
-    static patch(uri: string, options: RouteOptions | string) {
-        Router.add(uri, Method.PATCH, options);
-    }
-
     static delete(uri: string, options: RouteOptions | string) {
         Router.add(uri, Method.DELETE, options);
+    }
+
+    static trace(uri: string, options: RouteOptions | string) {
+        Router.add(uri, Method.TRACE, options);
+    }
+
+    static connect(uri: string, options: RouteOptions | string) {
+        Router.add(uri, Method.CONNECT, options);
+    }
+
+    static head(uri: string, options: RouteOptions | string) {
+        Router.add(uri, Method.HEAD, options);
+    }
+
+    static option(uri: string, options: RouteOptions | string) {
+        Router.add(uri, Method.OPTIONS, options);
+    }
+    static patch(uri: string, options: RouteOptions | string) {
+            Router.add(uri, Method.PATCH, options);
     }
 
     private static add(uri: string, method: string, options: RouteOptions | string) {
