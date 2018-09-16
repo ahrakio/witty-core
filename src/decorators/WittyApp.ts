@@ -10,9 +10,10 @@ import { AppConfig } from "../App.config";
 import { Middleware } from "../http/middlewares/Middleware";
 import { MiddlewareHandler } from "../http/middlewares/MiddlewareHandler";
 
+// prettier-ignore
 export function WittyApp<C extends Controller, M extends Middleware>(details: {
-    controllers: { new (): C }[];
-    middlewares: { new (): M }[];
+    controllers: { new (): C }[],
+    middlewares: { new (): M }[]
 }) {
     return <T extends { new (...args: any[]): {} }>(constructor: T) => {
         let c = new Map<{ new (): Controller }>();
