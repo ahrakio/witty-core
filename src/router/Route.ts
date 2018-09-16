@@ -1,29 +1,36 @@
 import { RouteTargetParser } from "./parsers/RouteTargetParser";
-import { Map } from "../utils/Map";
 import { RouteOptions } from "./RouteOptions";
+import {RouteInstance} from "./RouteInstance";
+import {RouteInstanceWithUriParams} from "./RouteInstanceWithUriParams";
+
 export class Route {
 	private target: string;
 	private uri: string;
 	private keys: string[];
-	private params_map: Map<string>;
 	private middlewares: string[];
 
 	constructor(uri: string, options: RouteOptions) {
 		this.target = options.target;
 		this.uri = uri;
 		this.keys = [];
-		this.params_map = new Map<string>();
 		this.middlewares = [];
 
 		if (options.middlewares !== undefined) {
 			this.middlewares = options.middlewares;
 		}
 	}
+
+	getInstance (real_time_uri:string, params_names?: string[], param_values?:string[] ) : RouteInstance {
+        if (params_names && param_values) {
+            return new RouteInstanceWithUriParams(real_time_uri, this.Target, this.Middlewares, params_names, param_values);
+        }
+	    return new RouteInstance(real_time_uri, this.Target, this.Middlewares);
+
+    }
+
+    // note:  when the route use uri params - this value will be different from the real time uri!
 	get Uri(): string {
 		return this.uri;
-	}
-	parseTarget(parser: RouteTargetParser): [string, string] {
-		return parser.parse(this.target);
 	}
 
 	set ParamKeys(keys: string[]) {
@@ -31,22 +38,6 @@ export class Route {
 	}
 	get ParamKeys(): string[] {
 		return this.keys;
-	}
-
-	public SetParamValues(values: string[]) {
-		if (values.length !== this.ParamKeys.length) {
-			console.log(
-				"ERROR: uri parameters count doesn't match to initialized regex parameter count"
-			);
-			return;
-		}
-		for (let key = 0; key < this.ParamKeys.length; ++key) {
-			this.params_map.add(this.ParamKeys[key], values[key]);
-		}
-	}
-
-	get Params(): Map<string> {
-		return this.params_map;
 	}
 
 	get Target(): string {

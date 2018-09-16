@@ -7,7 +7,8 @@ export class MiddlewareHandler {
 
     public async handle(): Promise<boolean> {
         return new Promise<boolean>(async (resolve, reject) => {
-            let middlewares: string[] = this.request.Route.Middlewares;
+            let middlewares: string[] = this.request.Middlewares;
+
             for (let i = 0; i < middlewares.length; i++) {
                 if (!AppConfig.Middlewares.has(middlewares[i])) {
                     return reject(false);
@@ -22,9 +23,9 @@ export class MiddlewareHandler {
                 if (!result) {
                     return reject(false);
                 }
-
-                return resolve(true);
             }
+
+            return resolve(true);
         });
     }
 }

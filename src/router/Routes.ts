@@ -1,9 +1,8 @@
 import { Map } from "../utils/Map";
 import { Method } from "./Constants";
-import { Route } from "./Route";
-
 import { MethodMapper } from "./MethodMapper";
 import { RouteOptions } from "./RouteOptions";
+import {RouteInstance} from "./RouteInstance";
 
 export class Routes {
 	private routes: Map<MethodMapper>;
@@ -20,7 +19,7 @@ export class Routes {
 		return this.routes.has(method) && this.routes.get(method).has(uri);
 	}
 
-	public match(method: string, uri: string): Route {
+	public match(method: string, uri: string): RouteInstance {
 		return this.routes.get(method).get(uri);
 	}
 

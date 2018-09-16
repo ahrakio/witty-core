@@ -37,7 +37,7 @@ module.exports = {
         new UglifyJsPlugin(),
         new DeclarationFilesPlugin({
             merge: true,
-            include: ["Request", "Response", "Router", "AppAbstract", "WittyApp", "Controller", "Middleware", "Route", "Method"]
+            include: ["Request", "Response", "Router", "AppAbstract", "WittyApp", "Controller", "Middleware", "Route", "Method", "RouteInstance", "RouteOptions", "Params"]
         })
     ]
 };
