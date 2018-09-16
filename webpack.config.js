@@ -11,7 +11,7 @@ const clean_options = {
 };
 
 module.exports = {
-    entry: "./src/decorators/WittyApp.ts",
+    entry: "./src/index.ts",
     module: {
         rules: [
             {
