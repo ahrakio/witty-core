@@ -10,7 +10,7 @@ export class RequestHandler {
     private method: string;
 
     constructor(private request: Request, private response: Response) {
-        let parsed = request.Route.parseTarget(new RouteDefaultParser());
+        let parsed = request.parseTarget(new RouteDefaultParser());
 
         this.controller = parsed[0];
         this.method = parsed[1];

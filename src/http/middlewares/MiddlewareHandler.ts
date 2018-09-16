@@ -8,7 +8,7 @@ export class MiddlewareHandler {
 
     public handle(): Promise<boolean> {
         return new Promise<boolean>(async (resolve, reject) => {
-            let middlewares: string[] = this.request.Route.Middlewares;
+            let middlewares: string[] = this.request.Middlewares;
 
             for (let i = 0; i < middlewares.length; i++) {
                 if (!AppConfig.Middlewares.has(middlewares[i])) {
