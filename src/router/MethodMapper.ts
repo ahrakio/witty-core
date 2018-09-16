@@ -4,6 +4,8 @@ import { Route } from "./Route";
 import { NoRoute } from "./exceptions/NoRoute";
 import { RouteConflict } from "../http/exceptions/RouteConflict";
 import { RouteOptions } from "./RouteOptions";
+import {RouteInstance} from "./RouteInstance";
+
 
 const end_with = /\/$/;
 const start_with = /^\//;
@@ -89,31 +91,25 @@ export class MethodMapper {
             uri = uri.slice(0, -1);
         }
         // add '/' in the beginning if there isn't one
-        if (uri.match(start_with)) {
+        if (!uri.match(start_with)) {
             uri = "/" + uri;
         }
         return uri;
     }
 
-    public get(uri: string): Route {
+    public get(uri: string): RouteInstance {
         uri = this.normalize_uri(uri);
         if (this.fixed_uri.has(uri)) {
-            return this.fixed_uri.get(uri);
+            return this.fixed_uri.get(uri).getInstance(uri);
         }
         return this.MatchRoute(uri);
     }
 
-    private MatchRoute(uri: string): Route {
+    private MatchRoute(uri: string): RouteInstance {
         for (let index = 0; index < this.regex_uri.length; ++index) {
             let match = uri.match(this.regex_uri[index].Uri);
             if (match !== null) {
-                let route = new Route(uri, {
-                    target: this.regex_uri[index].Target
-                });
-                route.ParamKeys = this.regex_uri[index].ParamKeys;
-                route.Middlewares = this.regex_uri[index].Middlewares;
-                route.SetParamValues(match.slice(1));
-                return route;
+                return this.regex_uri[index].getInstance(uri, this.regex_uri[index].ParamKeys, match.slice(1));
             }
         }
         throw new NoRoute();

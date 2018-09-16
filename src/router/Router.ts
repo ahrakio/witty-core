@@ -3,6 +3,7 @@ import { Route } from "./Route";
 import { NoRoute } from "./exceptions/NoRoute";
 import { Method } from "./Constants";
 import { RouteOptions } from "./RouteOptions";
+import {RouteInstance} from "./RouteInstance";
 
 export class Router {
     private static routes = new Routes();
@@ -52,7 +53,7 @@ export class Router {
         }
     }
 
-    static match(method: string, uri: string): Route {
+    static match(method: string, uri: string): RouteInstance {
         if (!Router.routes.has(method, uri)) {
             throw new NoRoute();
         }

@@ -1,5 +1,4 @@
 import * as http from "http";
-import { Route } from "../router/Route";
 import { RequestHandler } from "../http/RequestHandler";
 import { Request } from "../http/Request";
 import { Response } from "../http/Response";
@@ -9,6 +8,7 @@ import { Controller } from "../http/controllers/Controller";
 import { AppConfig } from "../App.config";
 import { Middleware } from "../http/middlewares/Middleware";
 import { MiddlewareHandler } from "../http/middlewares/MiddlewareHandler";
+import {RouteInstance} from "../router/RouteInstance";
 // prettier-ignore
 export function WittyApp<C extends Controller, M extends Middleware>(details: { controllers: { new(): C }[], middlewares: { new(): M }[] }) {
     return <T extends { new(...args: any[]): {} }>(constructor: T) => {
@@ -27,10 +27,11 @@ export function WittyApp<C extends Controller, M extends Middleware>(details: { 
         AppConfig.Middlewares = m;
         return class extends constructor {
             server = http.createServer(async (req, res) => {
-                let route: Route;
+                let route: RouteInstance;
                 let uri = req.url as string;
                 let method = req.method as string;
                 let headers = req.headers as { [key: string]: string };
+
 
                 let result;
 
@@ -43,9 +44,9 @@ export function WittyApp<C extends Controller, M extends Middleware>(details: { 
                     return;
                 }
 
-                route = result as Route;
+                route = result as RouteInstance;
 
-                let request = new Request(headers, route);
+                let request = new Request(req, route);
                 let response = new Response();
 
                 let middlewareHandler = new MiddlewareHandler(request, response);
