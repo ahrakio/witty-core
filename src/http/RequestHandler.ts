@@ -1,11 +1,11 @@
-import { Request } from "./Request";
-import { RouteDefaultParser } from "../router/parsers/RouteDefaultParser";
-import { Response } from "./Response";
-import { NoController } from "./exceptions/NoController";
-import { NoMethod } from "./exceptions/NoMethod";
+import {Request} from "./Request";
+import {RouteDefaultParser} from '../router/parsers/RouteDefaultParser';
+import {Response} from "./Response";
+import {NoController} from "./exceptions/NoController";
+import {NoMethod} from "./exceptions/NoMethod";
 import { AppConfig } from "../App.config";
 
-export class RequestHandler {
+export class RequestHandler { 
     private controller: string;
     private method: string;
 
@@ -24,7 +24,7 @@ export class RequestHandler {
         let controller = AppConfig.Controllers.get(this.controller);
         let controllerInstance = new controller();
 
-        if (typeof controllerInstance[this.method] !== "function") {
+        if (typeof controllerInstance[this.method] !== 'function') {
             throw new NoMethod();
         }
 
@@ -32,11 +32,13 @@ export class RequestHandler {
             // Run the controller and middlewares
             this.response.Reject = reject;
             this.response.Resolve = resolve;
-
+            
             controllerInstance.Request = this.request;
             controllerInstance.Response = this.response;
-
+            
             controllerInstance[this.method]();
         });
     }
+
+    
 }
