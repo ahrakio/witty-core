@@ -1,6 +1,6 @@
 {
     "name": "ahrakio",
-    "version": "1.7.4",
+    "version": "1.7.5",
     "description": "",
     "main": "dist/bundle.js",
     "types": "dist/index.d.ts",
