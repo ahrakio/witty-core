@@ -25,6 +25,8 @@ module.exports = {
         extensions: [".ts", ".js"]
     },
     output: {
+        library: "bundle",
+        libraryTarget: "umd",
         filename: "bundle.js",
         path: path.resolve(__dirname, "dist")
     },
@@ -33,9 +35,9 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(clean_paths, clean_options),
         new UglifyJsPlugin(),
-        // new DeclarationFilesPlugin({
-        //     merge: true,
-        //     include: ["Request", "Response", "Router", "AppAbstract", "WittyApp", "Controller", "Middleware", "Route", "Method"]
-        // })
+        new DeclarationFilesPlugin({
+            merge: true,
+            include: ["Request", "Response", "Router", "AppAbstract", "WittyApp", "Controller", "Middleware", "Route", "Method"]
+        })
     ]
 };
