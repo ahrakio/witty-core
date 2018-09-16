@@ -33,9 +33,9 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(clean_paths, clean_options),
         new UglifyJsPlugin(),
-        new DeclarationFilesPlugin({
-            merge: true,
-            include: ["Request", "Response", "Router", "AppAbstract", "WittyApp", "Controller", "Middleware", "Route", "Method"]
-        })
+        // new DeclarationFilesPlugin({
+        //     merge: true,
+        //     include: ["Request", "Response", "Router", "AppAbstract", "WittyApp", "Controller", "Middleware", "Route", "Method"]
+        // })
     ]
 };
