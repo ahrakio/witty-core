@@ -1,41 +1,41 @@
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-const path = require('path');
-
+const CleanWebpackPlugin = require("clean-webpack-plugin");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const path = require("path");
+const DeclarationFilesPlugin = require("./declaration");
 
 // Clean configurations
-const clean_paths = [
-    'dist'
-];
+const clean_paths = ["dist"];
 
 const clean_options = {
     watch: true
 };
 
 module.exports = {
-    entry: './src/index.ts',
+    entry: "./src/decorators/WittyApp.ts",
     module: {
         rules: [
             {
                 test: /\.ts$/,
-                use: 'ts-loader',
+                use: "ts-loader",
                 exclude: /node_modules/
             }
         ]
     },
     resolve: {
-        extensions: ['.ts', '.js']
+        extensions: [".ts", ".js"]
     },
     output: {
-        library: 'bundle',
-        filename: 'dist/bundle.js',
-        libraryTarget: 'umd',
-        path: path.resolve(__dirname)
+        filename: "bundle.js",
+        path: path.resolve(__dirname, "dist")
     },
-    target: 'node',
-    mode: 'none',
+    target: "node",
+    mode: "none",
     plugins: [
         new CleanWebpackPlugin(clean_paths, clean_options),
-        new UglifyJsPlugin()
+        new UglifyJsPlugin(),
+        new DeclarationFilesPlugin({
+            merge: true,
+            include: ["Request", "Response", "Router", "AppAbstract", "WittyApp", "Controller", "Middleware", "Route", "Method"]
+        })
     ]
 };
