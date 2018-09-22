@@ -1,6 +1,6 @@
 {
-    "name": "ahrakio",
-    "version": "1.8.8",
+    "name": "@ahrakio/witty-core",
+    "version": "1.0.0",
     "description": "",
     "main": "dist/bundle.js",
     "types": "dist/index.d.ts",
