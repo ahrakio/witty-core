@@ -1,6 +1,6 @@
 {
     "name": "@ahrakio/witty-core",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "",
     "main": "dist/bundle.js",
     "types": "dist/index.d.ts",
@@ -12,7 +12,7 @@
     "author": "",
     "license": "ISC",
     "devDependencies": {
-        "@ahrakio/witty-webpack-declaration-files": "^1.0.2",
+        "@ahrakio/witty-webpack-declaration-files": "^1.0.3",
         "@types/node": "^10.5.1",
         "clean-webpack-plugin": "^0.1.19",
         "ts-loader": "^4.4.2",
