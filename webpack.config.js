@@ -1,7 +1,7 @@
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const path = require("path");
-const DeclarationFilesPlugin = require("./declaration");
+const DeclarationFilesPlugin = require("@ahrakio/witty-webpack-declaration-files");
 
 // Clean configurations
 const clean_paths = ["dist"];
@@ -37,7 +37,20 @@ module.exports = {
         new UglifyJsPlugin(),
         new DeclarationFilesPlugin({
             merge: true,
-            include: ["Request", "Response", "Router", "AppAbstract", "WittyApp", "Controller", "Middleware", "Route", "Method", "RouteInstance", "RouteOptions", "Params"]
+            include: [
+                "Request",
+                "Response",
+                "Router",
+                "AppAbstract",
+                "WittyApp",
+                "Controller",
+                "Middleware",
+                "Route",
+                "Method",
+                "RouteInstance",
+                "RouteOptions",
+                "Params"
+            ]
         })
     ]
 };

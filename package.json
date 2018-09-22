@@ -6,14 +6,13 @@
     "types": "dist/index.d.ts",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "rm ./dist/* && tsc",
-        "run": "tsc && node ./dist/index.js",
-        "start": "webpack"
+        "build": "webpack"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "devDependencies": {
+        "@ahrakio/witty-webpack-declaration-files": "^1.0.2",
         "@types/node": "^10.5.1",
         "clean-webpack-plugin": "^0.1.19",
         "ts-loader": "^4.4.2",
