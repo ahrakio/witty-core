@@ -3,7 +3,7 @@ import { Route } from "./Route";
 import { NoRoute } from "./exceptions/NoRoute";
 import { Method } from "./Constants";
 import { RouteOptions } from "./RouteOptions";
-import {RouteInstance} from "./RouteInstance";
+import { RouteInstance } from "./RouteInstance";
 
 export class Router {
     private static routes = new Routes();
@@ -39,8 +39,9 @@ export class Router {
     static option(uri: string, options: RouteOptions | string) {
         Router.add(uri, Method.OPTIONS, options);
     }
+
     static patch(uri: string, options: RouteOptions | string) {
-            Router.add(uri, Method.PATCH, options);
+        Router.add(uri, Method.PATCH, options);
     }
 
     private static add(uri: string, method: string, options: RouteOptions | string) {

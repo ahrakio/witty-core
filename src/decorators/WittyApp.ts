@@ -1,3 +1,4 @@
+import { ResponseSender } from "./../http/ResponseSender";
 import * as http from "http";
 import { RequestHandler } from "../http/RequestHandler";
 import { Request } from "../http/Request";
@@ -35,7 +36,6 @@ export function WittyApp<C extends Controller, M extends Middleware>(details: {
                 let method = req.method as string;
                 let headers = req.headers as { [key: string]: string };
 
-
                 let result;
 
                 try {
@@ -70,7 +70,7 @@ export function WittyApp<C extends Controller, M extends Middleware>(details: {
                     requestHandler
                         .handle()
                         .then((resolved: Response) => {
-                            resolved.send(res);
+                            (new ResponseSender(resolved, res)).send();
                         })
                         .catch((rej) => {
                             res.write("rejected");

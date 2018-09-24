@@ -1,8 +1,10 @@
+import { Headers } from "./Headers";
+
 export class Response {
     private data: string;
     private statusCode: number;
-    private resolve: any; 
-    private reject: any; 
+    private headers: Headers;
+    private resolve: any;
 
     constructor() {
         this.data = "";
@@ -12,12 +14,8 @@ export class Response {
     set Resolve(value: any) {
         this.resolve = value;
     }
-    
-    set Reject(value: any) {
-        this.reject = value;
-    }
 
-    set Data(value: any) {
+    set Data(value: string) {
         this.data = value;
     }
 
@@ -25,17 +23,43 @@ export class Response {
         this.statusCode = value;
     }
 
+    get StatusCode(): number {
+        return this.statusCode;
+    }
+
+    get Data(): string {
+        return this.data;
+    }
+
+    get Headers(): Headers {
+        return this.headers;
+    }
+
     json(data: any, statusCode: number = 200) {
+        this.headers.set("Content-Type", "application/json");
         this.data = JSON.stringify(data);
         this.statusCode = statusCode;
         this.resolve(this);
     }
 
-    send(res: any) {
-        res.writeHead(this.statusCode);
-        res.write(this.data);
-        res.end();
+    text(data: any, statusCode: number = 200) {
+        this.headers.set("Content-Type", "text/plain");
+        this.data = data;
+        this.statusCode = statusCode;
+        this.resolve(this);
     }
 
+    html(data: any, statusCode: number = 200) {
+        this.headers.set("Content-Type", "text/html");
+        this.data = data;
+        this.statusCode = statusCode;
+        this.resolve(this);
+    }
 
+    css(data: any, statusCode: number = 200) {
+        this.headers.set("Content-Type", "text/css");
+        this.data = data;
+        this.statusCode = statusCode;
+        this.resolve(this);
+    }
 }

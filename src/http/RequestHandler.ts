@@ -18,7 +18,6 @@ export class RequestHandler {
 
     public handle(): Promise<Response> {
         return new Promise<Response>((resolve, reject) => {
-            this.response.Reject = reject;
             this.response.Resolve = resolve;
 
             if (!AppConfig.Controllers.has(this.controller)) {
