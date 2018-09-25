@@ -1,8 +1,6 @@
 import { Request } from "./Request";
 import { RouteDefaultParser } from "../router/parsers/RouteDefaultParser";
 import { Response } from "./Response";
-import { NoController } from "./exceptions/NoController";
-import { NoMethod } from "./exceptions/NoMethod";
 import { AppConfig } from "../App.config";
 
 export class RequestHandler {

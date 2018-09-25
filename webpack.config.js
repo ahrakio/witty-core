@@ -49,7 +49,10 @@ module.exports = {
                 "Method",
                 "RouteInstance",
                 "RouteOptions",
-                "Params"
+                "Params",
+                "Map",
+                "RouteTargetParser",
+                "RouteDefaultParser"
             ]
         })
     ]
