@@ -3,6 +3,7 @@ import { RouteOptions } from "./RouteOptions";
 import {RouteInstance} from "./RouteInstance";
 import {RouteInstanceWithUriParams} from "./RouteInstanceWithUriParams";
 
+
 export class Route {
 	private target: string;
 	private uri: string;
@@ -17,6 +18,10 @@ export class Route {
 
 		if (options.middlewares !== undefined) {
 			this.middlewares = options.middlewares;
+		}
+
+		if (options.waitToBody === undefined || options.waitToBody) {
+			this.Middlewares.push('WaitToBodyMiddleWare');
 		}
 	}
 

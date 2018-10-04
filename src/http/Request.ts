@@ -123,33 +123,21 @@ export class Request {
     }
 
     /**
-     * Blocking Call. returns client's http body. wait until the last packet will be received.
-     * Note: After one of the body request functions finish - the data will be save in the object and hence the other calls will return immediately.
+     * returns client's http body when WaitToBody doesn't set to false.
+     * Note: when WaitToBody set to false - this method return null until the other body request function will return successfully.
+     *      after one of the body request functions will return - the data will be save in the object and hence the other calls will return immediately.
      * @returns {string} http body.
      * @constructor
      */
-    Body() : string {
-        if (this.body === null ) {
-            this.getBody();
-            while(this.body === null) {}
-        }
-        return this.body;
+    get Body() : string {
+        return this.body + '';
     }
 
-    private getBody() : void {
-        let data = '';
-        this.req.on('data', (chunk) => {
-               data += chunk.toString();
-           }).on('end', () => {
-               this.body = data;
-           }).on('error', (err => {
-               console.log(err)
-           }));
-    }
 
     /**
      * Returns promise that will returns client's http body - when the last packet will be received.
-     * Note: After one of the body request functions finish - the data will be save in the object and hence the other calls will return immediately.
+     * Note: relevant when WaitToBody set to false and only on the first body request functions call.
+     *      after the first call (or when WaitToBody set to true) the data will be save in the object and hence the other calls will return immediately.
      * @returns {Promise<string>}
      * @constructor
      */
@@ -166,12 +154,14 @@ export class Request {
                     resolve(this.body);
                 }).on ('error', (err) => reject(err));
             }
-        });
+        }).catch(err => 'Error');
     }
 
     /**
      * get 3 function to handle income packets in stream mode.
-     * Note: After one of the body request functions finish - the data will be save in the object and hence the other calls will return immediately.
+     * Note: relevant when WaitToBody set to false and only on the first body request functions call.
+     *      after the first call (or when WaitToBody set to true) the data will be save in the object and
+     *      hence the other calls will enter to next() with all the data, and end() call immediately after it will finish.
      * @param {(string) => void} next  function that handle single packet.
      * @param {() => void} end  function that handle the end of stream.
      * @param {(string) => void} error function that handler error massage.

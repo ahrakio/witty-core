@@ -37,13 +37,9 @@ export class Response {
     }
 
     json(data: any, statusCode: number = 200) {
-        console.log(data, statusCode);
         this.headers.set("Content-Type", "application/json");
-        console.log(this.headers);
         this.data = JSON.stringify(data);
-        console.log(this.data);
         this.statusCode = statusCode;
-        console.log(this.statusCode);
         this.resolve(this);
     }
 

@@ -10,6 +10,7 @@ import { AppConfig } from "../App.config";
 import { Middleware } from "../http/middlewares/Middleware";
 import { MiddlewareHandler } from "../http/middlewares/MiddlewareHandler";
 import { RouteInstance } from "../router/RouteInstance";
+import {WaitToBodyMiddleWare} from "../http/middlewares/WaitToBodyMiddleWare";
 // prettier-ignore
 export function WittyApp<C extends Controller, M extends Middleware>(details: {
     controllers: { new (): C }[],
@@ -27,6 +28,9 @@ export function WittyApp<C extends Controller, M extends Middleware>(details: {
             m.add(middleware.name, middleware);
         }
 
+        // add built-in middlewares
+        m.add('WaitToBodyMiddleWare', WaitToBodyMiddleWare);
+        
         AppConfig.Controllers = c;
         AppConfig.Middlewares = m;
         return class extends constructor {
@@ -34,7 +38,6 @@ export function WittyApp<C extends Controller, M extends Middleware>(details: {
                 let route: RouteInstance;
                 let uri = req.url as string;
                 let method = req.method as string;
-                let headers = req.headers as { [key: string]: string };
 
                 let result;
 
@@ -56,7 +59,7 @@ export function WittyApp<C extends Controller, M extends Middleware>(details: {
 
                 try {
                     if (!(await middlewareHandler.handle())) {
-                        res.write("didnt pass middleware");
+                        res.write("didn't pass middleware");
                         res.end();
                         return;
                     }
