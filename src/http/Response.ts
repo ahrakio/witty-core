@@ -36,6 +36,7 @@ export class Response {
         return this.headers;
     }
 
+
     json(data: any, statusCode: number = 200, resolve: boolean = true) {
         this.headers.set("Content-Type", "application/json");
         this.data = JSON.stringify(data);
