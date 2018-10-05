@@ -36,31 +36,44 @@ export class Response {
         return this.headers;
     }
 
-    json(data: any, statusCode: number = 200) {
+
+    json(data: any, statusCode: number = 200, resolve: boolean = true) {
         this.headers.set("Content-Type", "application/json");
         this.data = JSON.stringify(data);
         this.statusCode = statusCode;
-        this.resolve(this);
+
+        if (resolve) {
+            this.resolve(this);
+        }
     }
 
-    text(data: any, statusCode: number = 200) {
+    text(data: any, statusCode: number = 200, resolve: boolean = true) {
         this.headers.set("Content-Type", "text/plain");
         this.data = data;
         this.statusCode = statusCode;
-        this.resolve(this);
+
+        if (resolve) {
+            this.resolve(this);
+        }
     }
 
-    html(data: any, statusCode: number = 200) {
+    html(data: any, statusCode: number = 200, resolve: boolean = true) {
         this.headers.set("Content-Type", "text/html");
         this.data = data;
         this.statusCode = statusCode;
-        this.resolve(this);
+
+        if (resolve) {
+            this.resolve(this);
+        }
     }
 
-    css(data: any, statusCode: number = 200) {
+    css(data: any, statusCode: number = 200, resolve: boolean = true) {
         this.headers.set("Content-Type", "text/css");
         this.data = data;
         this.statusCode = statusCode;
-        this.resolve(this);
+
+        if (resolve) {
+            this.resolve(this);
+        }
     }
 }
