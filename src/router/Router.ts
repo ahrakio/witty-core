@@ -36,7 +36,7 @@ export class Router {
         Router.add(uri, Method.HEAD, options);
     }
 
-    static option(uri: string, options: RouteOptions | string) {
+    static options(uri: string, options: RouteOptions | string) {
         Router.add(uri, Method.OPTIONS, options);
     }
 

@@ -34,7 +34,6 @@ export function WittyApp<C extends Controller, M extends Middleware>(details: {
                 let route: RouteInstance;
                 let uri = req.url as string;
                 let method = req.method as string;
-                let headers = req.headers as { [key: string]: string };
 
                 let result;
 
