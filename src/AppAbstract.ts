@@ -1,16 +1,19 @@
+import { NetworkAdapter } from "./adapters/NetworkAdapter";
+
 export abstract class AppAbstract {
-	constructor() {}
+    private adapters: NetworkAdapter[];
 
-	private server: any;
-	private port: number;
+    constructor() {}
 
-	public bootstrap() {
-		this.port = 8400;
+    public bootstrap() {
+        // if (typeof process.argv[2] !== "undefined") {
+        //     this.port = +process.argv[2];
+        // }
 
-		if (typeof process.argv[2] !== "undefined") {
-			this.port = +process.argv[2];
-		}
+        let counter: number = 0;
 
-		this.server.listen(this.port, () => {});
-	}
+        for (let adapter of this.adapters) {
+            adapter.listen();
+        }
+    }
 }

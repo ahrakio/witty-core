@@ -1,24 +1,20 @@
-import { ResponseSender } from "./../http/ResponseSender";
-import * as http from "http";
-import { RequestHandler } from "../http/RequestHandler";
-import { Request } from "../http/Request";
-import { Response } from "../http/Response";
-import { Router } from "../router/Router";
 import { Map } from "../utils/Map";
 import { Controller } from "../http/controllers/Controller";
 import { AppConfig } from "../App.config";
 import { Middleware } from "../http/middlewares/Middleware";
-import { MiddlewareHandler } from "../http/middlewares/MiddlewareHandler";
-import { RouteInstance } from "../router/RouteInstance";
-import {WaitToBodyMiddleWare} from "../http/middlewares/WaitToBodyMiddleWare";
+import { NetworkAdapter } from "../adapters/NetworkAdapter";
 // prettier-ignore
-export function WittyApp<C extends Controller, M extends Middleware>(details: {
-    controllers: { new (): C }[],
-    middlewares: { new (): M }[]
-}) {
+export function WittyApp<C extends Controller, M extends Middleware, A extends NetworkAdapter>(
+    details: {
+        controllers: { new (): C }[],
+        middlewares: { new (): M }[],
+        adapters: { new (): A }[],
+    }
+    ) {
     return <T extends { new (...args: any[]): {} }>(constructor: T) => {
         let c = new Map<{ new (): Controller }>();
         let m = new Map<{ new (): Middleware }>();
+        let a: NetworkAdapter[] = [];
 
         for (let controller of details.controllers) {
             c.add(controller.name, controller);
@@ -28,62 +24,17 @@ export function WittyApp<C extends Controller, M extends Middleware>(details: {
             m.add(middleware.name, middleware);
         }
 
-        // add built-in middlewares
-        m.add('WaitToBodyMiddleWare', WaitToBodyMiddleWare);
+        for (let adapter of details.adapters) {
+            a.push(new adapter());
+        }
         
         AppConfig.Controllers = c;
         AppConfig.Middlewares = m;
+        AppConfig.Adapters = a;
+
         return class extends constructor {
-            server = http.createServer(async (req, res) => {
-                let route: RouteInstance;
-                let uri = req.url as string;
-                let method = req.method as string;
-
-                let result;
-
-                try {
-                    result = Router.match(method, uri);
-                } catch (err) {
-                    res.write("No such route\n");
-                    res.write(req.method + " " + req.url);
-                    res.end();
-                    return;
-                }
-
-                route = result as RouteInstance;
-
-                let request = new Request(req, route);
-                let response = new Response();
-
-                let middlewareHandler = new MiddlewareHandler(request, response);
-
-                try {
-                    if (!(await middlewareHandler.handle())) {
-                        res.write("didn't pass middleware");
-                        res.end();
-                        return;
-                    }
-                } catch (e) {
-                    console.log(e);
-                }
-
-                let requestHandler = new RequestHandler(request, response);
-
-                try {
-                    requestHandler
-                        .handle()
-                        .then((resolved: Response) => {
-                            (new ResponseSender(resolved, res)).send();
-                        })
-                        .catch((rej) => {
-                            res.write("rejected");
-                            res.end();
-                        });
-                } catch (err) {
-                    res.write(err);
-                    res.end();
-                }
-            });
+            adapters = a;
+            env = '.env';
         };
     };
 }

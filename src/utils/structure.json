@@ -1,0 +1,38 @@
+{
+    "connections": [
+        {
+            "name": "",
+            "protocol": "HTTP",
+            "host": "127.0.0.1",
+            "port": 80
+        },
+        {
+            "name": "",
+            "protocol": "HTTP",
+            "host": "127.0.0.1",
+            "port": 443
+        },
+        {
+            "name": "",
+            "protocol": "TCP",
+            "host": "127.0.0.1",
+            "port": 8080
+        },
+        {
+            "name": "",
+            "protocol": "UDP",
+            "host": "127.0.0.1",
+            "port": 8000
+        }
+    ],
+    "microservices": [
+        {
+            "name": "",
+            "connections": []
+        },
+        {
+            "name": "",
+            "connections": []
+        }
+    ]
+}
