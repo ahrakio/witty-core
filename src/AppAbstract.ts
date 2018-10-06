@@ -10,8 +10,6 @@ export abstract class AppAbstract {
         //     this.port = +process.argv[2];
         // }
 
-        let counter: number = 0;
-
         for (let adapter of this.adapters) {
             adapter.listen();
         }
