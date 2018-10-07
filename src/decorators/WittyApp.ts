@@ -1,3 +1,4 @@
+import { NetworkAdapterParser } from "./../adapters/NetworkAdapterParser";
 import { Map } from "../utils/Map";
 import { Controller } from "../http/controllers/Controller";
 import { AppConfig } from "../App.config";
@@ -14,7 +15,7 @@ export function WittyApp<C extends Controller, M extends Middleware>(
     return <T extends { new (...args: any[]): {} }>(constructor: T) => {
         let c = new Map<{ new (): Controller }>();
         let m = new Map<{ new (): Middleware }>();
-        let a: NetworkAdapter[] = NetworkAdapter.loadConfigurationFile(path.resolve(process.cwd(), 'structure.json'));
+        let a: NetworkAdapter[] = NetworkAdapterParser.loadConfigurationFile(path.resolve(process.cwd(), 'structure.json'));
 
         for (let controller of details.controllers) {
             c.add(controller.name, controller);

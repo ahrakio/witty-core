@@ -32,9 +32,14 @@ module.exports = {
     },
     target: "node",
     mode: "none",
+    devtool: "source-map",
     plugins: [
         new CleanWebpackPlugin(clean_paths, clean_options),
-        new UglifyJsPlugin(),
+        new UglifyJsPlugin({
+            cache: true,
+            parallel: true,
+            sourceMap: true
+        }),
         new DeclarationFilesPlugin({
             merge: true,
             include: [
@@ -52,7 +57,9 @@ module.exports = {
                 "Params",
                 "Map",
                 "RouteTargetParser",
-                "RouteDefaultParser"
+                "RouteDefaultParser",
+                "NetworkAdapter",
+                "NetworkAdapterParser"
             ]
         })
     ]
