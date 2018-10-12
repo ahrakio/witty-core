@@ -2,6 +2,7 @@ const CleanWebpackPlugin = require("clean-webpack-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const path = require("path");
 const DeclarationFilesPlugin = require("@ahrakio/witty-webpack-declaration-files");
+const webpack = require("webpack");
 
 // Clean configurations
 const clean_paths = ["dist"];
@@ -32,7 +33,6 @@ module.exports = {
     },
     target: "node",
     mode: "none",
-    devtool: "source-map",
     plugins: [
         new CleanWebpackPlugin(clean_paths, clean_options),
         new UglifyJsPlugin({
@@ -61,6 +61,9 @@ module.exports = {
                 "NetworkAdapter",
                 "NetworkAdapterParser"
             ]
+        }),
+        new webpack.SourceMapDevToolPlugin({
+            filename: "bundle.js.map"
         })
     ]
 };

@@ -64,3 +64,4 @@ typings/
 /.idea
 /dist
 /.vscode
+.DS_Store

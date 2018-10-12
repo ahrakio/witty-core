@@ -1,19 +1,18 @@
-import {Headers} from "./Headers";
-import {RouteInstance} from "../router/RouteInstance";
-import {IncomingMessage} from "http";
-import {parse} from "url";
-import {Params} from "./Params";
-import {RouteTargetParser} from "../router/parsers/RouteTargetParser";
+import { Headers } from "./Headers";
+import { RouteInstance, RouteTargetParser } from "@ahrakio/witty-router";
+import { IncomingMessage } from "http";
+import { parse } from "url";
+import { Params } from "@ahrakio/witty-router";
 
 export class Request {
-    private req : IncomingMessage;
+    private req: IncomingMessage;
     private route: RouteInstance;
 
-    private query_params : Params|null;
-    private headers: Headers| null;
+    private query_params: Params | null;
+    private headers: Headers | null;
     private body: string | null;
 
-    constructor(req:IncomingMessage, route: RouteInstance) {
+    constructor(req: IncomingMessage, route: RouteInstance) {
         this.req = req;
         this.route = route;
 
@@ -22,7 +21,7 @@ export class Request {
         this.body = null;
     }
 
-    get Middlewares() :string[] {
+    get Middlewares(): string[] {
         return this.route.Middlewares;
     }
 
@@ -30,13 +29,13 @@ export class Request {
         return this.route.parseTarget(parser);
     }
 
-    get Target() :string {
+    get Target(): string {
         return this.route.Target;
     }
 
-    private parseHeaders(headers: {[key: string]: string}): Headers {
+    private parseHeaders(headers: { [key: string]: string }): Headers {
         let h = new Headers();
-        
+
         for (let key of Object.keys(headers)) {
             h.set(key, headers[key]);
         }
@@ -50,8 +49,8 @@ export class Request {
      * @constructor
      */
     get Headers(): Headers {
-        if (this.headers == null ) {
-            this.headers = this.parseHeaders(this.req.headers as {[key: string]: string});
+        if (this.headers == null) {
+            this.headers = this.parseHeaders(this.req.headers as { [key: string]: string });
         }
         return this.headers;
     }
@@ -82,7 +81,7 @@ export class Request {
      * @returns {Params} object with all inner uri parameters
      * @constructor
      */
-    get UriParams() : Params {
+    get UriParams(): Params {
         return this.route.UriParams;
     }
 
@@ -91,7 +90,7 @@ export class Request {
      * @returns {string} the method
      * @constructor
      */
-    get Method() : string {
+    get Method(): string {
         return this.req.method as string;
     }
 
@@ -100,7 +99,7 @@ export class Request {
      * @returns {string}
      * @constructor
      */
-    get RawUri() : string {
+    get RawUri(): string {
         return this.req.url as string;
     }
 
@@ -109,7 +108,7 @@ export class Request {
      * @returns {string}
      * @constructor
      */
-    get Path() :string {
+    get Path(): string {
         return this.route.Uri;
     }
 
@@ -118,7 +117,7 @@ export class Request {
      * @returns {string} client http version as string
      *
      */
-    get httpVersion():string {
+    get httpVersion(): string {
         return this.req.httpVersion;
     }
 
@@ -129,10 +128,9 @@ export class Request {
      * @returns {string} http body.
      * @constructor
      */
-    get Body() : string {
-        return this.body + '';
+    get Body(): string {
+        return this.body + "";
     }
-
 
     /**
      * Returns promise that will returns client's http body - when the last packet will be received.
@@ -141,20 +139,23 @@ export class Request {
      * @returns {Promise<string>}
      * @constructor
      */
-    PromisedBody() : Promise<string> {
+    PromisedBody(): Promise<string> {
         return new Promise<string>((resolve, reject) => {
             if (this.body !== null) {
                 resolve(this.body);
             } else {
-                let data = '';
-                this.req.on('data', (chunk) => {
-                    data += chunk.toString();
-                }).on ('end', () =>{
-                    this.body = data;
-                    resolve(this.body);
-                }).on ('error', (err) => reject(err));
+                let data = "";
+                this.req
+                    .on("data", (chunk) => {
+                        data += chunk.toString();
+                    })
+                    .on("end", () => {
+                        this.body = data;
+                        resolve(this.body);
+                    })
+                    .on("error", (err) => reject(err));
             }
-        }).catch(err => 'Error');
+        }).catch((err) => "Error");
     }
 
     /**
@@ -167,20 +168,22 @@ export class Request {
      * @param {(string) => void} error function that handler error massage.
      * @constructor
      */
-    StreamedBody(next:(string)=>void, end:()=>void, error:(string)=>void) {
-        if (this.body!== null) {
+    StreamedBody(next: (string) => void, end: () => void, error: (string) => void) {
+        if (this.body !== null) {
             next(this.body);
             end();
         } else {
-            let data = '';
-            this.req.on('data', chunk => {
-                data += chunk.toString();
-                next(chunk.toString());
-            }).on('end', () => {
-                this.body = data;
-                end();
-            }).on('error', error);
+            let data = "";
+            this.req
+                .on("data", (chunk) => {
+                    data += chunk.toString();
+                    next(chunk.toString());
+                })
+                .on("end", () => {
+                    this.body = data;
+                    end();
+                })
+                .on("error", error);
         }
     }
-
 }

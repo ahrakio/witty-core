@@ -1,5 +1,5 @@
 import { Request } from "./Request";
-import { RouteDefaultParser } from "../router/parsers/RouteDefaultParser";
+import { RouteDefaultParser } from "@ahrakio/witty-router";
 import { Response } from "./Response";
 import { AppConfig } from "../App.config";
 
