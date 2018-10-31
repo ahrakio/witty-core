@@ -23,6 +23,7 @@ export class RequestHandler {
             }
 
             let controller = AppConfig.Controllers.get(this.controller);
+            console.log(`RequestHandler.handle(): passing to ${this.controller}@${this.method}`);
             let controllerInstance = new controller();
 
             if (typeof controllerInstance[this.method] !== "function") {
