@@ -19,27 +19,41 @@ module.exports = {
                 test: /\.ts$/,
                 use: "ts-loader",
                 exclude: /node_modules/
+            },
+            {
+                test: /\.js$/,
+                use: ["source-map-loader"],
+                enforce: "pre"
             }
         ]
     },
     resolve: {
         extensions: [".ts", ".js"]
     },
+    optimization: {
+        minimizer: [
+            new UglifyJsPlugin({
+                cache: true,
+                parallel: true,
+                sourceMap: true,
+                uglifyOptions: {
+                    keep_classnames: true
+                }
+            })
+        ]
+    },
     output: {
-        library: "bundle",
+        library: "core",
         libraryTarget: "umd",
         filename: "bundle.js",
-        path: path.resolve(__dirname, "dist")
+        path: path.resolve(__dirname, "dist"),
+        devtoolModuleFilenameTemplate: "[absolute-resource-path]"
     },
     target: "node",
-    mode: "none",
+    mode: "production",
+    devtool: "source-map",
     plugins: [
         new CleanWebpackPlugin(clean_paths, clean_options),
-        new UglifyJsPlugin({
-            cache: true,
-            parallel: true,
-            sourceMap: true
-        }),
         new DeclarationFilesPlugin({
             merge: true,
             include: [
@@ -61,9 +75,6 @@ module.exports = {
                 "NetworkAdapter",
                 "NetworkAdapterParser"
             ]
-        }),
-        new webpack.SourceMapDevToolPlugin({
-            filename: "bundle.js.map"
         })
     ]
 };
