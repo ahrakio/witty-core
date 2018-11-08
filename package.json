@@ -2,11 +2,12 @@
     "name": "@ahrakio/witty-core",
     "version": "1.0.5",
     "description": "",
-    "main": "dist/bundle.js",
+    "main": "dist/core.js",
     "types": "dist/index.d.ts",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "webpack"
+        "prod": "webpack --config webpack.prod.js",
+        "dev": "webpack --config webpack.dev.js"
     },
     "keywords": [],
     "author": "",
